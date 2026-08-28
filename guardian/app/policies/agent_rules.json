@@ -1,0 +1,41 @@
+{
+  "forbidden_action_patterns": [
+    ".*\\*",
+    "iam:.*",
+    "sts:.*",
+    "s3:Delete.*",
+    "s3:PutBucketPolicy",
+    "s3:PutBucketAcl",
+    "dynamodb:Delete.*",
+    "dynamodb:Drop.*"
+  ],
+  "restricted_resources": [
+    "arn:aws:s3:::enterprise-confidential-finance-bucket.*",
+    "arn:aws:dynamodb:.*:.*:table/CustomerRecordsTable.*"
+  ],
+  "agent_roles": {
+    "devops-agent": {
+      "allowed_actions": ["s3:GetObject", "s3:PutObject", "s3:ListBucket"],
+      "allowed_resources": [
+        "arn:aws:s3:::enterprise-public-reports-bucket.*"
+      ],
+      "max_ttl_seconds": 300
+    },
+    "analyst-agent": {
+      "allowed_actions": ["s3:GetObject", "s3:ListBucket"],
+      "allowed_resources": [
+        "arn:aws:s3:::enterprise-public-reports-bucket.*"
+      ],
+      "max_ttl_seconds": 180
+    },
+    "executive-agent": {
+      "allowed_actions": ["s3:GetObject", "s3:PutObject", "s3:ListBucket", "dynamodb:GetItem", "dynamodb:Query"],
+      "allowed_resources": [
+        "arn:aws:s3:::enterprise-public-reports-bucket.*",
+        "arn:aws:s3:::enterprise-confidential-finance-bucket.*",
+        "arn:aws:dynamodb:.*:.*:table/CustomerRecordsTable.*"
+      ],
+      "max_ttl_seconds": 300
+    }
+  }
+}
